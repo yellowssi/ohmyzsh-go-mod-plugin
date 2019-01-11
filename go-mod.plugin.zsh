@@ -7,8 +7,12 @@ function go_mod_cwd() {
     if [[ $? == 0 ]]; then
       GIT_REPO_ROOT="$GIT_TOPLEVEL"
     fi
-    if test "${PWD##$GOPATH/src}" != "${PWD}"; then
-      export GO111MODULE=on
+    if [[ "${PWD##$GOPATH/src}" != "${PWD}" && "$GIT_REPO_ROOT" != "" ]]; then
+      # Check if this is a go project
+      if [[ -f $GIT_REPO_ROOT/go.mod ]]; then
+	# Check if this project is enable go module
+        export GO111MODULE=on
+      fi
     fi
   fi
 }
